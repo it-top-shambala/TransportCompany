@@ -1,0 +1,74 @@
+﻿@startuml
+'https://plantuml.com/class-diagram
+
+interface IObject {}
+
+IObject <|.. Passenger
+class Passenger {
+- firstName : string
+- lastName : string
+
++ Passenger(firstName : string, lastName : string)
+
++ GetFullName() : string
+}
+
+IObject <|.. Cargo
+class Cargo {
+- owner : string
+
++ Passenger(owner : string)
+
++ GetOwner() : string
+}
+
+IObject <--* Transport
+abstract Transport {
+- objects : IObject[]
+- name : string
+
+# Transport(name : string)
+
++ {abstract} Move() : void 
++ GetName() : string
+}
+
+Passenger <--o IPassengerTransition
+interface IPassengerTransition {
++ {abstract} Boarding(passengers : Passenger[]) : void
++ {abstract} UnBoarding() : Passenger[]
+}
+
+Cargo <--o ICargoTransition
+interface ICargoTransition {
++ {abstract} Loading(cargoes : Cargo[]) : void
++ {abstract} UnLoading() : Cargo[]
+}
+
+Transport <|-- MotorTransport
+abstract MotorTransport {
+# MotorTransport(name : string)
+
++ Move() : void
+}
+
+MotorTransport <|-- Bus
+IPassengerTransition <|.. Bus
+class Bus {
++ Bus(name : string)
+
++ Boarding(passengers : Passenger[]) : void
++ UnBoarding() : Passenger[]
+}
+
+MotorTransport <|-- Truck
+ICargoTransition <|.. Truck
+class Truck {
++ Truck(name : string)
+
++ Loading(cargoes : Cargo[]) : void
++ UnLoading() : Cargo[]
+}
+
+
+@enduml
